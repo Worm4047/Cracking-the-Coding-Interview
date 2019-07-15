@@ -21,31 +21,38 @@ class LinkedList{
         return temp;
     }
 
-    node *addNode(node *head, int val){
+    void addNode(int val){
+        node *h = this->head;
         node *temp = createNode(val);
-        if(!head)
-            return temp;
-        node *curr = head;
+        if(!h){
+            this->head= temp;
+            return;
+        }
+        node *curr = h;
         while(curr->next)
             curr = curr->next;
         curr->next = temp;
-        return head;
+        this->head = h;
     }
 
-    node *removeNode(node *head, int val){
-        node *curr = head;
+    void removeNode(int val){
+        node *h = this->head;
+        node *curr = h;
         node *prev = NULL;
         while(curr->val != val){
             prev = curr;
             curr = curr->next;
         }
         //Head node or only node
-        if(!prev)
-            return head->next;
+        if(!prev){
+            this->head = h->next;
+            return;
+        }
         prev->next = curr->next;
-        return head;
+        this->head = h;
     }
-    void displayList(node *head){
+    void displayList(){
+        node *h = this->head;
         while(head){
             cout<<head->val<<" ";
             head=head->next;
@@ -64,20 +71,18 @@ class HashMap{
 
     void insertKey(int key){
         int idx = key%(this->SIZE);
-        node *head = mp[idx].head;
-        mp[idx].head = mp[idx].addNode(head, key);
+        mp[idx].addNode(key);
     }
 
     void removeKey(int key){
         int idx = key%(this->SIZE);
-        node *head = mp[idx].head;
-        mp[idx].head = mp[idx].removeNode(head, key);
+        mp[idx].removeNode(key);
     }
 
     void displayHash(){
         for(int i=0;i<mp.size();i++){
             cout<<i<<"--->";
-            mp[i].displayList(mp[i].head);
+            mp[i].displayList();
             cout<<endl;
         }
     }
